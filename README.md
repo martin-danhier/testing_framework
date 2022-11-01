@@ -164,7 +164,7 @@ For example, to build the `tests/core/server.cpp` test, build the `core-server` 
 
 ### IDE integration
 
-If you are using Visual Studio Code, the [CMake Test Explorer](https://marketplace.visualstudio.com/items?itemName=fredericbonnet.cmake-test-adapter) extension can be used to list all tests in a tree and easily run them.
+If you are using **Visual Studio Code**, the [CMake Test Explorer](https://marketplace.visualstudio.com/items?itemName=fredericbonnet.cmake-test-adapter) extension can be used to list all tests in a tree and easily run them.
 
 You just have to add the following lines in your `.vscode/settings.json` file:
 
@@ -175,6 +175,8 @@ You just have to add the following lines in your `.vscode/settings.json` file:
 ```
 
 Replace the first line with your actual build directory.
+
+If you are using **CLion**, it has a built-in support for CTest. Each individual test target will appear in the target list, and a special "All CTest" target is available to run all tests at once.
 
 ## How to create a test
 
