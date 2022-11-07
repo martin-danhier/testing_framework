@@ -294,8 +294,8 @@ bool tf_assert_false(tf_context *context, size_t line_number, const char *file, 
                             file,
                             !condition,
                             recoverable
-                                ? tf_const_msg("Condition failed. Expected [true], got [false].")
-                                : tf_const_msg("Assertion failed. Expected [true], got [false]. Unable to continue execution."),
+                                ? tf_const_msg("Condition failed. Expected [false], got [true].")
+                                : tf_const_msg("Assertion failed. Expected [false], got [true]. Unable to continue execution."),
                             recoverable);
 }
 
