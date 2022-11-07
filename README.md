@@ -209,6 +209,10 @@ The macros are the following:
 
 The equivalent exists for expectations, for example ``EXPECT_TRUE``.
 
+There are also two macros that always throw an error, for example to report invalid branches (such as error codes).
+- ``ERROR(message)``: report the error and continue execution (like an EXPECT)
+- ``ERROR_AND_QUIT(message)``: report the error and stop the execution (like an ASSERT)
+
 ## C++ extension
 
 In C++, additional macros are available. To enable them, simply include the C++ variant:
