@@ -60,6 +60,10 @@ extern "C"
 
     // clang-format on
 
+#ifndef TF_RUN_TEST
+#define TF_RUN_TEST(test) test(context)
+#endif
+
     // --- Types ---
 
     typedef struct tf_context tf_context;

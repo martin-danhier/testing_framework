@@ -343,7 +343,7 @@ bool tf_run_test(tf_test_function pfn_test)
     tf_context *context = tf_create_context();
 
     // Run test
-    pfn_test(context);
+    TF_RUN_TEST(pfn_test);
 
     // Print result
 

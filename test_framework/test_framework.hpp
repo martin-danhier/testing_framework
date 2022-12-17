@@ -4,6 +4,9 @@
  */
 #pragma once
 
+void test_wrapper(void (*pfn_test)(tf_context *context), tf_context *context);
+#define TF_RUN_TEST(test) test_wrapper(test, context)
+
 #include <functional>
 #include <string>
 #include <memory>
@@ -22,6 +25,7 @@
 #define ASSERT_THROWS(fn) do { if (!tf_assert_throws(___context___, __LINE__, __FILE__, [&](){fn;}, false)) return; } while (0)
 #define ASSERT_NO_THROWS(fn) do { if (!tf_assert_no_throws(___context___, __LINE__, __FILE__, [&](){fn;}, false)) return; } while (0)
 #define ASSERT_EQ(actual, expected) do { if (!tf_assert_equal(___context___, __LINE__, __FILE__, (actual), (expected), false)) return; } while (0)
+#define ASSERT_NEQ(actual, not_expected) do { if (!tf_assert_not_equal(___context___, __LINE__, __FILE__, (actual), (not_expected), false)) return; } while (0)
 
 // clang-format on
 

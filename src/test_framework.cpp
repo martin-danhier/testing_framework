@@ -8,7 +8,7 @@
 #include <exception>
 #include <string>
 
-bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable)
+bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback &fn, bool recoverable)
 {
     // Run the test
     bool caught = false;
@@ -33,7 +33,7 @@ bool tf_assert_throws(tf_context *context, size_t line_number, const char *file,
     return true;
 }
 
-bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable)
+bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback &fn, bool recoverable)
 {
     // Run the test
     try
@@ -52,4 +52,16 @@ bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *fi
         return tf_assert_common(context, line_number, file, false, tf_dynamic_msg(message.c_str()), recoverable);
     }
     return true;
+}
+
+void test_wrapper(void (*pfn_test)(tf_context *context), tf_context *context)
+{
+    try
+    {
+        pfn_test(context);
+    }
+    catch (std::exception &e)
+    {
+        tf_assert_common(context, 0, "", false, tf_dynamic_msg(e.what()), false);
+    }
 }
