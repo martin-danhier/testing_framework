@@ -75,7 +75,11 @@ void tf_test_wrapper(tf_context *context, void *info)
     }
     catch (std::exception &e)
     {
-        tf_assert_error(context, cpp_info->main_line_number, cpp_info->main_file, e.what(), false);
+        std::string message = "Uncaught exception: \"";
+        message += e.what();
+        message += "\". Unable to continue execution.";
+
+        tf_assert_common(context, cpp_info->main_line_number, cpp_info->main_file, false, tf_dynamic_msg(message.c_str()), false);
     }
 }
 
