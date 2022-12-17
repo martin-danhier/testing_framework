@@ -394,11 +394,11 @@ bool tf_run_test(tf_test_function pfn_test, void *next)
     return success;
 }
 
-int tf_main(tf_test_function pfn_test, void *next)
+int tf_main(tf_test_function pfn_test, void *info)
 {
     TF_INIT_FORMATTING;
 
-    bool result = tf_run_test(pfn_test, next);
+    bool result = tf_run_test(pfn_test, info);
 
     return result == true ? EXIT_SUCCESS : EXIT_FAILURE;
 }

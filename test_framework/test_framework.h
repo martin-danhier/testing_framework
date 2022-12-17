@@ -22,13 +22,13 @@ extern "C"
 // Second: get the value of the counter
 #define TF_TEST1(id) TF_TEST2(id)
 // Third: generate the function definition and register it
-#define TF_TEST2(id)                             \
-    void __test_##id(tf_context *___context___, void* ___pfn_next___); \
-    int main(void)                               \
-    {                                            \
-        return tf_main(__test_##id, NULL);             \
-    }                                            \
-    void __test_##id(tf_context *___context___, void* ___pfn_next___)
+#define TF_TEST2(id)                                               \
+    void __test_##id(tf_context *___context___, void *___info___); \
+    int main(void)                                                 \
+    {                                                              \
+        return tf_main(__test_##id, NULL);                         \
+    }                                                              \
+    void __test_##id(tf_context *___context___, void *___info___)
 
     // Macros for assertions
 
@@ -74,7 +74,7 @@ extern "C"
 
     // --- Functions ---
 
-    int tf_main(tf_test_function pfn_test, void *next);
+    int tf_main(tf_test_function pfn_test, void *info);
 
     tf_message tf_const_msg(const char *message);
 
