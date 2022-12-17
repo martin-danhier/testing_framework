@@ -4,9 +4,6 @@
  */
 #pragma once
 
-void test_wrapper(void (*pfn_test)(struct tf_context *context), struct tf_context *context);
-#define TF_RUN_TEST(test) test_wrapper(test, context)
-
 #include <functional>
 #include <string>
 #include <memory>
@@ -29,11 +26,21 @@ void test_wrapper(void (*pfn_test)(struct tf_context *context), struct tf_contex
 
 // clang-format on
 
+#undef TF_TEST2
+#define TF_TEST2(id)                                \
+    void __test_##id(tf_context *___context___); \
+    int  main(void)                                            \
+    {                                                          \
+        return tf_main_cpp(__test_##id);             \
+    }                                                          \
+    void __test_##id(tf_context *___context___)
+
 // Functions
 
 // lambda type
 using tf_callback = std::function<void()>;
 
+int tf_main_cpp(tf_test_function pfn_test);
 bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 

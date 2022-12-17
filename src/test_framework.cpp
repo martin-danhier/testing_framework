@@ -54,14 +54,11 @@ bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *fi
     return true;
 }
 
-void test_wrapper(void (*pfn_test)(tf_context *context), tf_context *context)
+void tf_test_wrapper(tf_context *context, void* pfn_test) {
+    ((tf_test_function) pfn_test)(context, nullptr);
+}
+
+int tf_main_cpp(tf_test_function pfn_test)
 {
-    try
-    {
-        pfn_test(context);
-    }
-    catch (std::exception &e)
-    {
-        tf_assert_common(context, 0, "", false, tf_dynamic_msg(e.what()), false);
-    }
+    return tf_main(&tf_test_wrapper, (void*) pfn_test);
 }

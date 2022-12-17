@@ -335,7 +335,7 @@ bool tf_assert_error(tf_context *context, size_t line_number, const char *file, 
 
 // Main
 
-bool tf_run_test(tf_test_function pfn_test)
+bool tf_run_test(tf_test_function pfn_test, void *next)
 {
     printf("\n");
 
@@ -343,7 +343,7 @@ bool tf_run_test(tf_test_function pfn_test)
     tf_context *context = tf_create_context();
 
     // Run test
-    TF_RUN_TEST(pfn_test);
+    pfn_test(context, next);
 
     // Print result
 
@@ -394,11 +394,11 @@ bool tf_run_test(tf_test_function pfn_test)
     return success;
 }
 
-int tf_main(tf_test_function pfn_test)
+int tf_main(tf_test_function pfn_test, void *next)
 {
     TF_INIT_FORMATTING;
 
-    bool result = tf_run_test(pfn_test);
+    bool result = tf_run_test(pfn_test, next);
 
     return result == true ? EXIT_SUCCESS : EXIT_FAILURE;
 }

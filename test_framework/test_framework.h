@@ -22,12 +22,12 @@ extern "C"
 // Second: get the value of the counter
 #define TF_TEST1(id) TF_TEST2(id)
 // Third: generate the function definition and register it
-#define TF_TEST2(id)                                \
+#define TF_TEST2(id)                             \
     void __test_##id(tf_context *___context___); \
-    int  main(void)                                            \
-    {                                                          \
-        return tf_main(__test_##id);             \
-    }                                                          \
+    int main(void)                               \
+    {                                            \
+        return tf_main(__test_##id, NULL);             \
+    }                                            \
     void __test_##id(tf_context *___context___)
 
     // Macros for assertions
@@ -60,10 +60,6 @@ extern "C"
 
     // clang-format on
 
-#ifndef TF_RUN_TEST
-#define TF_RUN_TEST(test) test(context)
-#endif
-
     // --- Types ---
 
     typedef struct tf_context tf_context;
@@ -71,14 +67,14 @@ extern "C"
     typedef struct tf_message
     {
         const char *message;
-        bool  message_is_dynamic;
+        bool message_is_dynamic;
     } tf_message;
 
-    typedef void (*tf_test_function)(tf_context *);
+    typedef void (*tf_test_function)(tf_context *ctx, void *pfn_next);
 
     // --- Functions ---
 
-    int tf_main(tf_test_function pfn_test);
+    int tf_main(tf_test_function pfn_test, void *next);
 
     tf_message tf_const_msg(const char *message);
 
