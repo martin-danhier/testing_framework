@@ -40,7 +40,7 @@
 // lambda type
 using tf_callback = std::function<void()>;
 
-int tf_main_cpp(tf_test_function pfn_test);
+int tf_main_cpp(tf_test_function pfn_test, size_t main_line_number, const char *main_file);
 bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 
