@@ -4,7 +4,7 @@
  */
 #pragma once
 
-void test_wrapper(void (*pfn_test)(tf_context *context), tf_context *context);
+void test_wrapper(void (*pfn_test)(struct tf_context *context), struct tf_context *context);
 #define TF_RUN_TEST(test) test_wrapper(test, context)
 
 #include <functional>
