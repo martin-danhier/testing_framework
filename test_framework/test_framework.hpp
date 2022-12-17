@@ -31,7 +31,7 @@
     void __test_##id(tf_context *___context___, void* ___info___); \
     int  main(void)                                            \
     {                                                          \
-        return tf_main_cpp(__test_##id);             \
+        return tf_main_cpp(__test_##id, __LINE__, __FILE__);             \
     }                                                          \
     void __test_##id(tf_context *___context___, void* ___info___)
 
