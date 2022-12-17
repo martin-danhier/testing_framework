@@ -28,12 +28,12 @@
 
 #undef TF_TEST2
 #define TF_TEST2(id)                                \
-    void __test_##id(tf_context *___context___); \
+    void __test_##id(tf_context *___context___, void* ___pfn_next___); \
     int  main(void)                                            \
     {                                                          \
         return tf_main_cpp(__test_##id);             \
     }                                                          \
-    void __test_##id(tf_context *___context___)
+    void __test_##id(tf_context *___context___, void* ___pfn_next___)
 
 // Functions
 

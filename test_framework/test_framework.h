@@ -23,12 +23,12 @@ extern "C"
 #define TF_TEST1(id) TF_TEST2(id)
 // Third: generate the function definition and register it
 #define TF_TEST2(id)                             \
-    void __test_##id(tf_context *___context___); \
+    void __test_##id(tf_context *___context___, void* ___pfn_next___); \
     int main(void)                               \
     {                                            \
         return tf_main(__test_##id, NULL);             \
     }                                            \
-    void __test_##id(tf_context *___context___)
+    void __test_##id(tf_context *___context___, void* ___pfn_next___)
 
     // Macros for assertions
 
