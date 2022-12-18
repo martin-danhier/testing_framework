@@ -232,6 +232,9 @@ The following macros are available, on top of the basic ones:
 
 The expectations equivalents are also available.
 
+The C++ extensions also has extended support for uncaught exceptions.
+- Exceptions in the main test function will be reported as errors
+- Threads can be started using the `START_THREAD(thread_var, [&]{/* code */})` macro. Similarly, uncaught exceptions will be reported. See examples.
 
 ## How to check if we are in a test from the library ?
 

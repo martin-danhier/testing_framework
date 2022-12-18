@@ -65,9 +65,25 @@ bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *fi
     return true;
 }
 
+void tf_thread_wrapper(tf_callback fn, tf_context *context, size_t line, const char *file)
+{
+    try
+    {
+        fn();
+    }
+    catch (std::exception &e)
+    {
+        std::string message = "Uncaught exception: \"";
+        message += e.what();
+        message += "\". Unable to continue execution.";
+
+        tf_assert_common(context, line, file, false, tf_dynamic_msg(message.c_str()), false);
+    }
+}
+
 void tf_test_wrapper(tf_context *context, void *info)
 {
-    tf_cpp_wrapper_info *cpp_info = (tf_cpp_wrapper_info *) info;
+    tf_cpp_wrapper_info *cpp_info = (tf_cpp_wrapper_info *)info;
 
     try
     {

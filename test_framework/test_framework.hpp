@@ -7,6 +7,7 @@
 #include <functional>
 #include <string>
 #include <memory>
+#include <thread>
 #include "test_framework.h"
 
 // Macros
@@ -35,11 +36,19 @@
     }                                                          \
     void __test_##id(tf_context *___context___, void* ___info___)
 
+/** Starts a std::thread that catches uncaught exceptions and report them as test errors.
+ * @param id The name of the thread variable.
+ * @param fn The function to run in the thread. Should take a reference [&]
+ * Note: the thread should be joined at the end of the test.
+*/
+#define START_THREAD(id, fn) std::thread id([&] { tf_thread_wrapper(fn, ___context___, __LINE__, __FILE__); })
+
 // Functions
 
 // lambda type
 using tf_callback = std::function<void()>;
 
+void tf_thread_wrapper(tf_callback fn, tf_context *context, size_t line, const char *file);
 int tf_main_cpp(tf_test_function pfn_test, size_t main_line_number, const char *main_file);
 bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
