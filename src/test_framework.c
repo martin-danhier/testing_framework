@@ -11,6 +11,9 @@
 
 // --- Macros for pretty printing ---
 
+bool TF_INITIALIZED  = false;
+bool TF_COLOR_OUTPUT = true;
+
 // If WIN32 or _WIN32 or WIN64 or _WIN64 is defined, we are on a Windows platform.
 #if WIN32 || _WIN32 || WIN64 || _WIN64
 #include <windows.h>
@@ -22,34 +25,37 @@ HANDLE TF_CONSOLE_HANDLE          = 0;
 WORD   TF_DEFAULT_COLOR_ATTRIBUTE = 0;
 
 // Inits the stored variables
-#define TF_INIT_FORMATTING                                                        \
-    do                                                                            \
-    {                                                                             \
-        TF_CONSOLE_HANDLE                      = GetStdHandle(STD_OUTPUT_HANDLE); \
-        CONSOLE_SCREEN_BUFFER_INFO consoleInfo = {0};                             \
-        GetConsoleScreenBufferInfo(TF_CONSOLE_HANDLE, &consoleInfo);              \
-        TF_DEFAULT_COLOR_ATTRIBUTE = consoleInfo.wAttributes;                     \
+#define TF_INIT_FORMATTING                                                            \
+    do                                                                                \
+    {                                                                                 \
+        if (TF_COLOR_OUTPUT) {                                                        \
+            TF_CONSOLE_HANDLE                      = GetStdHandle(STD_OUTPUT_HANDLE); \
+            CONSOLE_SCREEN_BUFFER_INFO consoleInfo = {0};                             \
+            GetConsoleScreenBufferInfo(TF_CONSOLE_HANDLE, &consoleInfo);              \
+            TF_DEFAULT_COLOR_ATTRIBUTE = consoleInfo.wAttributes;                     \
+        }                                                                             \
     } while (0)
 
 // Applies the various colors and settings
-#define TF_FORMAT_BOLD_RED   SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xC)
-#define TF_FORMAT_BOLD_GREEN SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xA)
-#define TF_FORMAT_RED        SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0x4)
-#define TF_FORMAT_YELLOW     SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0x6)
-#define TF_FORMAT_BOLD       SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xF)
-#define TF_FORMAT_RESET      SetConsoleTextAttribute(TF_CONSOLE_HANDLE, TF_DEFAULT_COLOR_ATTRIBUTE)
+#define TF_FORMAT_BOLD_RED   if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xC)
+#define TF_FORMAT_BOLD_GREEN if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xA)
+#define TF_FORMAT_RED        if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0x4)
+#define TF_FORMAT_YELLOW     if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0x6)
+#define TF_FORMAT_BOLD       if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, 0xF)
+#define TF_FORMAT_RESET      if (TF_COLOR_OUTPUT) SetConsoleTextAttribute(TF_CONSOLE_HANDLE, TF_DEFAULT_COLOR_ATTRIBUTE)
 
 #else
 
 // On civilized terminals, we just need to print an ANSI color code.
 #define TF_INIT_FORMATTING
-#define TF_FORMAT_BOLD_RED   printf("\033[31;1m")
-#define TF_FORMAT_BOLD_GREEN printf("\033[32;1m")
-#define TF_FORMAT_RED        printf("\033[31m")
-#define TF_FORMAT_YELLOW     printf("\033[93m")
-#define TF_FORMAT_BOLD       printf("\033[1m")
-#define TF_FORMAT_RESET      printf("\033[0m")
+#define TF_FORMAT_BOLD_RED   if (TF_COLOR_OUTPUT) printf("\033[31;1m")
+#define TF_FORMAT_BOLD_GREEN if (TF_COLOR_OUTPUT) printf("\033[32;1m")
+#define TF_FORMAT_RED        if (TF_COLOR_OUTPUT) printf("\033[31m")
+#define TF_FORMAT_YELLOW     if (TF_COLOR_OUTPUT) printf("\033[93m")
+#define TF_FORMAT_BOLD       if (TF_COLOR_OUTPUT) printf("\033[1m")
+#define TF_FORMAT_RESET      if (TF_COLOR_OUTPUT) printf("\033[0m")
 #endif
+
 
 // --- Types ---
 
@@ -394,9 +400,29 @@ bool tf_run_test(tf_test_function pfn_test, void *next)
     return success;
 }
 
-int tf_main(tf_test_function pfn_test, void *info)
+int tf_main(tf_test_function pfn_test, void *info, int argc, char **argv)
 {
-    TF_INIT_FORMATTING;
+    if (!TF_INITIALIZED)
+    {
+        // If --no-color is passed, disable colors
+        for (int i = 0; i < argc; i++)
+        {
+            if (strcmp(argv[i], "--no-color") == 0)
+            {
+                TF_COLOR_OUTPUT = false;
+                break;
+            }
+        }
+
+        // Alternatively, check if NO_COLOR environment variable is set
+        if (TF_COLOR_OUTPUT && getenv("NO_COLOR") != NULL)
+        {
+            TF_COLOR_OUTPUT = false;
+        }
+        
+        TF_INIT_FORMATTING;
+        TF_INITIALIZED = true;
+    }
 
     bool result = tf_run_test(pfn_test, info);
 

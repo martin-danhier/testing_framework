@@ -28,12 +28,12 @@
 // clang-format on
 
 #undef TF_TEST2
-#define TF_TEST2(id)                                \
-    void __test_##id(tf_context *___context___, void* ___info___); \
-    int  main(void)                                            \
-    {                                                          \
-        return tf_main_cpp(__test_##id, __LINE__, __FILE__);             \
-    }                                                          \
+#define TF_TEST2(id)                                                     \
+    void __test_##id(tf_context *___context___, void* ___info___);       \
+    int  main(int argc, char **argv)                                     \
+    {                                                                    \
+        return tf_main_cpp(__test_##id, __LINE__, __FILE__, argc, argv); \
+    }                                                                    \
     void __test_##id(tf_context *___context___, void* ___info___)
 
 /** Starts a std::thread that catches uncaught exceptions and report them as test errors.
@@ -49,7 +49,7 @@
 using tf_callback = std::function<void()>;
 
 void tf_thread_wrapper(tf_callback fn, tf_context *context, size_t line, const char *file);
-int tf_main_cpp(tf_test_function pfn_test, size_t main_line_number, const char *main_file);
+int tf_main_cpp(tf_test_function pfn_test, size_t main_line_number, const char *main_file, int argc = 0, char **argv = nullptr);
 bool tf_assert_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 

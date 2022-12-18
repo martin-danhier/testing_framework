@@ -99,10 +99,10 @@ void tf_test_wrapper(tf_context *context, void *info)
     }
 }
 
-int tf_main_cpp(tf_test_function pfn_test, size_t line_number, const char *file)
+int tf_main_cpp(tf_test_function pfn_test, size_t line_number, const char *file, int argc, char **argv)
 {
 
     tf_cpp_wrapper_info tf_test_wrapper_info = {pfn_test, line_number, file};
 
-    return tf_main(&tf_test_wrapper, &tf_test_wrapper_info);
+    return tf_main(&tf_test_wrapper, &tf_test_wrapper_info, argc, argv);
 }

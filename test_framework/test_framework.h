@@ -24,9 +24,9 @@ extern "C"
 // Third: generate the function definition and register it
 #define TF_TEST2(id)                                               \
     void __test_##id(tf_context *___context___, void *___info___); \
-    int main(void)                                                 \
+    int main(int argc, char **argv)                                \
     {                                                              \
-        return tf_main(__test_##id, NULL);                         \
+        return tf_main(__test_##id, NULL, argc, argv);             \
     }                                                              \
     void __test_##id(tf_context *___context___, void *___info___)
 
@@ -74,7 +74,7 @@ extern "C"
 
     // --- Functions ---
 
-    int tf_main(tf_test_function pfn_test, void *info);
+    int tf_main(tf_test_function pfn_test, void *info, int argc, char **argv);
 
     tf_message tf_const_msg(const char *message);
 
