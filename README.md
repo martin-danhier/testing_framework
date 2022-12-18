@@ -59,6 +59,8 @@ If some fail, it will show:
 
 On supported terminals, the output will be colored.
 
+Examples of test files can be found in the [tests](./tests) directory.
+
 ## How to setup
 
 1. Add this repository as a submodule of your project

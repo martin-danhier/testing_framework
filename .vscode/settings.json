@@ -1,0 +1,5 @@
+{
+    "cmakeExplorer.buildDir": "${workspaceFolder}/build",
+    "cmakeExplorer.buildConfig": "Debug",
+    "cmakeExplorer.suiteDelimiter": "-"
+}
