@@ -82,6 +82,24 @@ TEST_FN(uncaught_exception) {
     throw std::runtime_error("Error");
 }
 
+TEST_FN(failing_expect_eq_std_string) {
+    ASSERT_EQ(std::string("Hello"), std::string("World"));
+}
+
+TEST_FN(failing_expect_neq_std_string) {
+    ASSERT_NEQ(std::string("Hello"), std::string("Hello"));
+}
+
+TEST_FN(failing_assert_eq_std_string) {
+    ASSERT_EQ(std::string("Hello"), std::string("World"));
+}
+
+TEST_FN(failing_assert_neq_std_string) {
+    ASSERT_NEQ(std::string("Hello"), std::string("Hello"));
+}
+
+
+
 
 // Global test function
 
@@ -108,7 +126,11 @@ TEST {
         failing_assert_neq,
         failing_assert_throws,
         failing_assert_no_throws,
-        uncaught_exception
+        uncaught_exception,
+        failing_expect_eq_std_string,
+        failing_expect_neq_std_string,
+        failing_assert_eq_std_string,
+        failing_assert_neq_std_string
     };
 
     // Run tests

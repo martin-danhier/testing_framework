@@ -54,15 +54,29 @@ bool tf_assert_throws(tf_context *context, size_t line_number, const char *file,
 bool tf_assert_no_throws(tf_context *context, size_t line_number, const char *file, const tf_callback& fn, bool recoverable);
 
 template<typename T>
+std::string tf_to_string(const T &value)
+{
+    // If it is a string
+    if constexpr (std::is_same<T, std::string>::value)
+    {
+        return "\"" + value + "\"";
+    }
+    else
+    {
+        return std::to_string(value);
+    }
+}
+
+template<typename T>
 bool tf_assert_equal(tf_context *context, size_t line_number, const char *file, const T &actual, const T &expected, bool recoverable)
 {
     if (actual != expected)
     {
         std::string s = recoverable ? "Condition" : "Assertion";
         s += " failed. Expected: ";
-        s += std::to_string(expected);
+        s += tf_to_string(expected);
         s += ", got: ";
-        s += std::to_string(actual);
+        s += tf_to_string(actual);
         s += ".";
         s += recoverable ? "" : " Unable to continue execution.";
 
@@ -79,7 +93,7 @@ bool tf_assert_not_equal(tf_context *context, size_t line_number, const char *fi
     {
         std::string s = recoverable ? "Condition" : "Assertion";
         s += " failed. Expected something different than ";
-        s += not_expected;
+        s += tf_to_string(not_expected);
         s += ", but got the same.";
         s += recoverable ? "" : " Unable to continue execution.";
 

@@ -20,6 +20,8 @@ TEST
     EXPECT_NEQ(value, 2);
     EXPECT_THROWS(throw std::runtime_error("Error"));
     EXPECT_NO_THROWS(value = 17);
+    EXPECT_EQ(std::string("Hello"), std::string("Hello"));
+    EXPECT_NEQ(std::string("Hello"), std::string("World"));
 
     // --- Assertions ---
 
@@ -34,4 +36,6 @@ TEST
     ASSERT_NEQ(value, 2);
     ASSERT_THROWS(throw std::runtime_error("Error"));
     ASSERT_NO_THROWS(value = 17);
+    ASSERT_EQ(std::string("Hello"), std::string("Hello"));
+    ASSERT_NEQ(std::string("Hello"), std::string("World"));
 }
