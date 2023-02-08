@@ -52,9 +52,9 @@ extern "C"
 
 #define ASSERT_FALSE(condition) do { if (!tf_assert_false(___context___, __LINE__, __FILE__, (condition), false)) return; } while (0)
 
-#define ASSERT_NOT_NULL(pointer) do { if (!tf_assert_not_null(___context___, __LINE__, __FILE__, (pointer), false)) return; } while (0)
+#define ASSERT_NOT_NULL(pointer) do { if (!tf_assert_not_null(___context___, __LINE__, __FILE__, (void*)(pointer), false)) return; } while (0)
 
-#define ASSERT_NULL(pointer) do { if (!tf_assert_null(___context___, __LINE__, __FILE__, (pointer), false)) return; } while (0)
+#define ASSERT_NULL(pointer) do { if (!tf_assert_null(___context___, __LINE__, __FILE__, (void*)(pointer), false)) return; } while (0)
 
 #define ERROR_AND_QUIT(message) do { if (!tf_assert_error(___context___, __LINE__, __FILE__, (message), false)) return; } while (0)
 
